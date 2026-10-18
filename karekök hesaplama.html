@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karekök Daraltma</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem 5.5rem;
+    color: #e5e7eb;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(56, 189, 248, .18), transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(29, 78, 216, .22), transparent 55%),
+      linear-gradient(180deg, #000000, #03040a 60%, #070a18);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 90px 120px, #bae6fd, transparent),
+      radial-gradient(1px 1px at 160px 60px, #fff, transparent),
+      radial-gradient(2px 2px at 220px 180px, #e0f2fe, transparent),
+      radial-gradient(1px 1px at 300px 90px, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 60px 240px, #fff, transparent);
+    background-size: 320px 300px;
+    animation: parilti 4s ease-in-out infinite alternate;
+  }
+  @keyframes parilti {
+    from { opacity: .45; }
+    to   { opacity: 1; }
+  }
+
+  h1 {
+    margin-bottom: .2rem;
+    background: linear-gradient(90deg, #ffffff, #e2e8f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 12px rgba(34, 211, 238, .45));
+  }
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0; }
+  input, button { font-size: 1rem; padding: .6rem .8rem; border-radius: 8px; border: 1px solid #1e3a5f; }
+  input { background: #0a1024; color: #fff; }
+  input:focus { outline: none; border-color: #ffffff; box-shadow: 0 0 0 3px rgba(34, 211, 238, .25); }
+  button {
+    background: linear-gradient(90deg, #0ea5e9, #ffffff);
+    color: #02030a;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  button:hover { transform: scale(1.05); box-shadow: 0 0 18px rgba(34, 211, 238, .6); }
+
+  .step {
+    background: rgba(12, 18, 45, .75);
+    border-left: 5px solid #ffffff;
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    margin: .7rem 0;
+    animation: gel .4s ease backwards;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .step:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(34, 211, 238, .25); }
+  .step b { color: #67e8f9; }
+  @keyframes gel {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .small { color: #94a3b8; font-size: .9rem; }
+  .result {
+    background: rgba(34, 211, 238, .08);
+    border: 2px solid #22d3ee;
+    box-shadow: 0 0 18px rgba(34, 211, 238, .3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+  .result b { color: #a5f3fc; }
+  .error { color: #fca5a5; }
+
+  .layout { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+  .aciklama {
+    background: rgba(12, 18, 45, .8);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    position: sticky;
+    top: 1rem;
+    border-top: 5px solid #ffffff;
+  }
+  .aciklama h2 { margin-top: 0; font-size: 1.2rem; color: #fff; }
+  .aciklama h3 { color: #67e8f9; }
+  .aciklama li { font-weight: bold; margin-bottom: .5rem; }
+  .aciklama li::marker { font-weight: bold; color: #22d3ee; }
+
+  .alt-serit {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .7rem 1.5rem;
+    background: linear-gradient(90deg, #000000, #070b1f);
+    border-top: 3px solid #ffffff;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+  .alt-serit .ad { display: block; font-size: 1.05rem; transition: color .2s, text-shadow .2s; }
+  .alt-serit .bolum { display: block; font-size: .8rem; font-weight: 600; color: #67e8f9; letter-spacing: 1px; text-transform: uppercase; }
+  .alt-serit .no { font-size: 1rem; color: #a5f3fc; text-shadow: 0 0 10px rgba(34, 211, 238, .7); transition: transform .2s; }
+  .alt-serit .no:hover { transform: scale(1.08); }
+  .alt-serit .sol:hover .ad { color: #67e8f9; text-shadow: 0 0 12px rgba(34, 211, 238, .8); }
+
+  @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="layout">
+    <main>
+      <h1>√ Karekök Daraltma</h1>
+      <p class="small">Bir sayı gir; karekökünün hangi iki sayı arasında olduğunu adım adım daraltarak bulalım.</p>
+
+      <div class="row">
+        <input id="sayi" type="number" min="0" step="1" value="3" placeholder="Sayı (örn. 3)">
+        <input id="basamak" type="number" min="1" max="10" value="4" placeholder="Basamak">
+        <button id="hesapla">Hesapla</button>
+      </div>
+      <p class="small">İkinci kutu: virgülden sonra kaç basamak hesaplanacağı (1-10).</p>
+
+      <div id="cikti"></div>
+    </main>
+
+    <aside class="aciklama">
+      <h2>Bu uygulama nasıl çalışıyor?</h2>
+      <p>Karekök bulmak = "Hangi sayının karesi bu sayıya eşit?" sorusu.</p>
+      <h3>Cevabı bir anda bulmak yerine ARALIK DARALTIYORUZ:</h3>
+
+      <ol>
+        <li>Önce tam sayı kısmını bul:</li>
+        <li>Sonra onda birler basamağı:</li>
+        <li>Sonra yüzde birler:</li>
+      </ol>
+
+      <p>Her adımda aralık 10 kat küçülür.</p>
+    </aside>
+  </div>
+
+  <footer class="alt-serit">
+    <div class="sol">
+      <span class="ad">Osman Şenel</span>
+      <span class="bolum">Ön-Yüz Yazılım</span>
+    </div>
+    <span class="no">Öğrenci No: 26420139</span>
+  </footer>
+
+<script>
+function ondalikYaz(tamSayi, k) {
+  let s = tamSayi.toString();
+  if (k === 0) return s;
+  s = s.padStart(k + 1, "0");
+  return s.slice(0, -k) + "." + s.slice(-k);
+}
+
+function daralt(x, basamakSayisi) {
+  const adimlar = [];
+
+  let c = 0n;
+  while ((c + 1n) * (c + 1n) <= x) c++;
+  adimlar.push({ k: 0, alt: c, ust: c + 1n, tam: c * c === x });
+  if (c * c === x) return adimlar;
+
+  for (let k = 1; k <= basamakSayisi; k++) {
+    const hedef = x * 100n ** BigInt(k);
+    c = c * 10n;
+    while ((c + 1n) * (c + 1n) <= hedef) c++;
+    adimlar.push({ k, alt: c, ust: c + 1n, tam: c * c === hedef });
+    if (c * c === hedef) break;
+  }
+  return adimlar;
+}
+
+document.getElementById("hesapla").addEventListener("click", () => {
+  const cikti = document.getElementById("cikti");
+  const xHam = document.getElementById("sayi").value.trim();
+  const b = parseInt(document.getElementById("basamak").value, 10);
+
+  if (!/^\d+$/.test(xHam) || !(b >= 1 && b <= 10)) {
+    cikti.innerHTML = '<p class="error">Lütfen sayı kutusuna 0 veya pozitif bir tam sayı, basamak kutusuna 1-10 arası bir değer gir.</p>';
+    return;
+  }
+  const x = BigInt(xHam);
+  const adimlar = daralt(x, b);
+
+  let html = "";
+  for (const a of adimlar) {
+    const alt = ondalikYaz(a.alt, a.k);
+    const ust = ondalikYaz(a.ust, a.k);
+    const altKare = ondalikYaz(a.alt * a.alt, 2 * a.k);
+    const ustKare = ondalikYaz(a.ust * a.ust, 2 * a.k);
+
+    if (a.tam) {
+      html += `<div class="step"><b>Adım ${a.k}:</b> ${alt}² = ${altKare} → tam kare! √${xHam} = <b>${alt}</b></div>`;
+    } else {
+      html += `<div class="step"><b>Adım ${a.k}:</b> ${alt} &lt; √${xHam} &lt; ${ust}
+        <div class="small">çünkü ${alt}² = ${altKare} ve ${ust}² = ${ustKare}</div></div>`;
+    }
+  }
+
+  const son = adimlar[adimlar.length - 1];
+  const sonuc = ondalikYaz(son.alt, son.k);
+  html += son.tam
+    ? `<div class="result">√${xHam} = <b>${sonuc}</b></div>`
+    : `<div class="result">√${xHam} ≈ <b>${sonuc}</b> (ilk ${son.k} ondalık basamak doğru)</div>`;
+
+  cikti.innerHTML = html;
+});
+
+document.getElementById("hesapla").click();
+</script>
+</body>
+</html>
